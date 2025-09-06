@@ -12,11 +12,11 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  const subscription = await getSubscription();
+  // const subscription = await getSubscription();
 
-  if (!subscription) {
-    redirect("/onboarding");
-  }
+  // if (!subscription) {
+  //   redirect("/onboarding");
+  // }
 
   return <>{children}</>;
 }
