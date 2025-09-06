@@ -13,9 +13,9 @@ export const metadata = {
 };
 
 export default async function Marketing() {
-  const queryClient = getQueryClient();
+  // const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery(trpc.assetTypes.list.queryOptions());
+  // await queryClient.prefetchQuery(trpc.assetTypes.list.queryOptions());
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
