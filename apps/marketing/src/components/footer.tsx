@@ -1,3 +1,5 @@
+'use client';
+
 import { Logo } from "@/components/logo";
 import { getMarketingUrl } from "@v1/utils/environment";
 

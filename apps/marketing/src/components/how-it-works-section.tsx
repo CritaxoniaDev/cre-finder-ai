@@ -1,3 +1,5 @@
+'use client';
+
 import { getDashboardUrl } from "@v1/utils/environment";
 
 const HowItWorksSection = () => {

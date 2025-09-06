@@ -7,6 +7,7 @@ import NavBar from "@/components/nav-bar";
 import PricingSection from "@/components/pricing-section";
 import TestimonialsSection from "@/components/testimonials-section";
 import { getQueryClient, trpc } from "@v1/trpc/server";
+import { Suspense } from "react";
 export const metadata = {
   title: "CREFinderAI",
 };
@@ -17,17 +18,19 @@ export default async function Marketing() {
   await queryClient.prefetchQuery(trpc.assetTypes.list.queryOptions());
 
   return (
-    <div className="min-h-screen flex flex-col light">
-      <NavBar />
-      <main className="flex-grow">
-        <HeroSection />
-        <FeaturesSection />
-        <HowItWorksSection />
-        <PricingSection />
-        <TestimonialsSection />
-        <CTASection />
-      </main>
-      <Footer />
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="min-h-screen flex flex-col light">
+        <NavBar />
+        <main className="flex-grow">
+          <HeroSection />
+          <FeaturesSection />
+          <HowItWorksSection />
+          <PricingSection />
+          <TestimonialsSection />
+          <CTASection />
+        </main>
+        <Footer />
+      </div>
+    </Suspense>
   );
 }
