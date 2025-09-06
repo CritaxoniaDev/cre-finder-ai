@@ -1,0 +1,18 @@
+export type {
+  BulkSkipTraceAwaitRequest,
+  BulkSkipTraceAwaitResponse,
+  BulkSkipTraceAwaitResult,
+  BulkSkipTraceRequest,
+  BulkSkipTraceResponse,
+  BulkSkipTraceWebhookResponse,
+  GetBulkSkipTraceAwaitParams,
+  GetBulkSkipTraceParams,
+  GetPropertySearchParams,
+  GetSkipTraceParams,
+  PropertySearchResult,
+  PropertySearchResponse,
+  SkipTraceResponse,
+  SkipTraceIdentity,
+  SkipTraceDemographics,
+  SkipTraceStats,
+} from "../providers/realestateapi/types";

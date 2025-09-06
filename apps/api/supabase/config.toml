@@ -1,0 +1,60 @@
+project_id = "cre-finder-ai-staging"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+extra_search_path = ["public"]
+max_rows = 100
+
+[auth]
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://localhost:3000", "http://localhost:54321/auth/v1/confirm"]
+jwt_expiry = 36000
+
+[db]
+port = 54325  # Changed from 54322 to 54325 to avoid port conflict
+
+[studio]
+port = 54323
+
+[auth.external.google]
+enabled = true
+client_id = "env(GOOGLE_CLIENT_ID)"
+secret = "env(GOOGLE_SECRET)"
+redirect_uri = "http://localhost:54321/auth/v1/confirm"
+
+[auth.email]
+double_confirm_changes = true
+enable_confirmations = true
+enable_signup = true
+
+# Custom email templates - Run `bun restart` to apply changes locally
+# https://supabase.com/docs/guides/local-development/customizing-email-templates
+[auth.email.template.magic_link]
+subject = "CRE Finder AI"
+content_path = "./supabase/templates/otp.html"
+
+[auth.email.template.confirmation]
+subject = "CRE Finder AI"
+content_path = "./supabase/templates/confirm.html"
+
+[auth.email.template.recovery]
+subject = "CRE Finder AI"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.email.template.email_change]
+subject = "CRE Finder AI"
+content_path = "./supabase/templates/email_change.html"
+
+# Enable auth hooks - Run `bun restart` to apply changes locally
+# https://supabase.com/docs/guides/auth/auth-hooks#local-development
+[auth.hook.custom_access_token]
+enabled = false
+uri = "pg-functions://postgres/public/custom_access_token_hook"
+
+[analytics]
+enabled = true
+port = 54327
+vector_port = 54328
+backend = "postgres"

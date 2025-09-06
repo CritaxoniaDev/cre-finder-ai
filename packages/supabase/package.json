@@ -1,0 +1,41 @@
+{
+  "name": "@v1/supabase",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.5.2",
+    "@v1/logger": "workspace:*",
+    "@v1/property-data": "workspace:*",
+    "react": "^18.3.1",
+    "server-only": "^0.0.1",
+    "stripe": "16.9.0",
+    "supabase": "^2.24.3"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "typescript": "^5.8.3"
+  },
+  "exports": {
+    "./job": "./src/clients/job.ts",
+    "./server": "./src/clients/server.ts",
+    "./client": "./src/clients/client.ts",
+    "./admin": "./src/clients/admin.ts",
+    "./mutations": "./src/mutations/index.ts",
+    "./middleware": "./src/clients/middleware.ts",
+    "./queries": "./src/queries/index.ts",
+    "./cached-queries": "./src/queries/cached-queries.ts",
+    "./stripe": "./src/queries/stripe/index.ts",
+    "./stripe-admin": "./src/queries/stripe/admin.ts",
+    "./types": "./src/types/index.ts",
+        "./lib/integrations": "./src/lib/integrations.ts",
+    "./lib/properties": "./src/lib/properties.ts",
+    "./validations/integrations": "./src/validations/integrations.ts",
+    "./validations/campaigns": "./src/validations/campaigns.ts"
+  }
+}

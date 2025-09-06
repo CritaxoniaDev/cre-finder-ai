@@ -1,0 +1,79 @@
+{
+  "_meta": {
+    "template_version": 0
+  },
+  "fixtures": [
+    {
+      "name": "prod_growth",
+      "path": "/v1/products",
+      "method": "post",
+      "params": {
+        "name": "Growth Plan",
+        "description": "Unlimited skip tracing, unlimited storage, 200 monthly leads, 200 monthly exports, nationwide property data, customizable filters, exclusive access to your zip code searches, early access to AI outreach feature.",
+        "metadata": {
+          "max_searches": 200,
+          "max_exports": 200,
+          "skip_tracing": "unlimited",
+          "storage": "unlimited",
+          "property_data": "nationwide",
+          "customizable_filters": true,
+          "exclusive_zip_access": true,
+          "ai_outreach_early_access": true,
+          "is_enterprise": false
+        }
+      }
+    },
+    {
+      "name": "price_growth_month",
+      "path": "/v1/prices",
+      "method": "post",
+      "params": {
+        "product": "${prod_growth:id}",
+        "currency": "usd",
+        "billing_scheme": "per_unit",
+        "unit_amount": 9900,
+        "recurring": {
+          "interval": "month",
+          "interval_count": 1,
+          "trial_period_days": 7
+        }
+      }
+    },
+    {
+      "name": "prod_professional",
+      "path": "/v1/products",
+      "method": "post",
+      "params": {
+        "name": "Professional Plan",
+        "description": "Unlimited skip tracing, unlimited storage, 1000 monthly leads, 1000 monthly exports, nationwide property data, customizable filters, exclusive access to your zip code searches, early access to AI outreach feature.",
+        "metadata": {
+          "max_searches": 1000,
+          "max_exports": 1000,
+          "skip_tracing": "unlimited",
+          "storage": "unlimited",
+          "property_data": "nationwide",
+          "customizable_filters": true,
+          "exclusive_zip_access": true,
+          "ai_outreach_early_access": true,
+          "is_enterprise": false
+        }
+      }
+    },
+    {
+      "name": "price_professional_month",
+      "path": "/v1/prices",
+      "method": "post",
+      "params": {
+        "product": "${prod_professional:id}",
+        "currency": "usd",
+        "billing_scheme": "per_unit",
+        "unit_amount": 49900,
+        "recurring": {
+          "interval": "month",
+          "interval_count": 1,
+          "trial_period_days": 7
+        }
+      }
+    }
+  ]
+}

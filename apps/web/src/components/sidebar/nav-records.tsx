@@ -1,0 +1,166 @@
+"use client";
+
+import { Folder, Forward, MoreHorizontal } from "lucide-react";
+
+import { IconBuildingStore, IconPlus } from "@tabler/icons-react";
+import {
+  IconBed,
+  IconBox,
+  IconBuilding,
+  IconBuildingCommunity,
+  IconBuildingSkyscraper,
+  IconHome,
+  IconMap,
+  IconTruck,
+} from "@tabler/icons-react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import type { Tables } from "@v1/supabase/types";
+import { useTRPC } from "@v1/trpc/client";
+import { cn } from "@v1/ui/cn";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@v1/ui/dropdown-menu";
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@v1/ui/sidebar";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+export function NavRecords() {
+  const { isMobile } = useSidebar();
+  const pathname = usePathname();
+
+  const searchParams = useSearchParams();
+
+  const isActive = (path: string, slug?: string) => {
+    if (slug) {
+      return (
+        pathname.startsWith(path) && searchParams.get("asset_type") === slug
+      );
+    }
+
+    return pathname.startsWith(path);
+  };
+
+  const trpc = useTRPC();
+  const { data: licenses } = useSuspenseQuery(
+    trpc.licenses.list.queryOptions(),
+  );
+  console.log("licenses", licenses);
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden">
+        Records
+      </SidebarGroupLabel>
+      <SidebarGroupContent className="flex flex-col gap-2">
+        <SidebarMenu>
+          {licenses?.map((item) => {
+            // @ts-expect-error
+            const Icon = AssetTypeIcons[item.asset_type_slug];
+
+            const path = "/dashboard/records";
+            const href = `${path}?asset_type=${item.asset_type_slug}&locations=${item.location_licenses
+              .map((loc) => loc.location_internal_id)
+              ?.join(",")}`;
+
+            return (
+              <SidebarMenuItem key={item.asset_type_slug}>
+                <SidebarMenuButton
+                  tooltip={item.asset_types.name!}
+                  asChild
+                  size="lg"
+                  className={cn(
+                    "group-data-[collapsible=icon]:!w-full group-data-[collapsible=icon]:!px-1 group-data-[collapsible=icon]:!h-14 group-data-[collapsible=icon]:!gap-1 group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:!flex-col",
+                    isActive(path, item.asset_type_slug!) &&
+                    "bg-primary/10 text-primary",
+                  )}
+                >
+                  <Link
+                    href={href}
+                    className="group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:gap-1"
+                  >
+                    {Icon && (
+                      <Icon className="!size-4 group-data-[collapsible=icon]:!size-5" />
+                    )}
+                    <span className="group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:leading-tight group-data-[collapsible=icon]:text-center group-data-[collapsible=icon]:font-medium group-data-[collapsible=icon]:max-w-full group-data-[collapsible=icon]:truncate">
+                      {item.asset_types.name}
+                    </span>
+                  </Link>
+                </SidebarMenuButton>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuAction
+                      showOnHover
+                      className="group-data-[collapsible=icon]:hidden"
+                    >
+                      <MoreHorizontal />
+                      <span className="sr-only">More</span>
+                    </SidebarMenuAction>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className="w-48 rounded-lg"
+                    side={isMobile ? "bottom" : "right"}
+                    align={isMobile ? "end" : "start"}
+                  >
+                    <DropdownMenuItem asChild>
+                      <Link href={href}>
+                        <Folder className="text-muted-foreground" />
+                        <span>View Records</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={`${href}&modal=true`}>
+                        <Forward className="text-muted-foreground" />
+                        <span>Manage Locations</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </SidebarMenuItem>
+            );
+          })}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip="New search"
+              asChild
+              size="lg"
+              className={cn(
+                "text-sidebar-foreground/70 group-data-[collapsible=icon]:!size-10 group-data-[collapsible=icon]:!w-full group-data-[collapsible=icon]:!px-0 group-data-[collapsible=icon]:!h-14 group-data-[collapsible=icon]:!gap-0 group-data-[collapsible=icon]:!justify-center",
+                isActive("/dashboard/search") && "bg-primary/10 text-primary",
+              )}
+            >
+              <Link href="/dashboard/search">
+                <IconPlus />
+                <span className="group-data-[collapsible=icon]:hidden">
+                  New search
+                </span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
+const AssetTypeIcons = {
+  residential: IconHome,
+  retail: IconBuildingStore,
+  office: IconBuilding,
+  industrial: IconTruck,
+  "multi-family": IconBuildingSkyscraper,
+  "self-storage": IconBox,
+  land: IconMap,
+  hospitality: IconBed,
+  "mixed-use": IconBuildingCommunity,
+};

@@ -1,0 +1,17 @@
+import type { Client } from "../types";
+
+export async function getUserQuery(supabase: Client, userId: string) {
+  const { data, error } = await supabase
+    .from("users")
+    .select()
+    .eq("id", userId)
+    .single()
+    .throwOnError();
+
+  return { data, error };
+}
+
+export * from "./asset-types";
+export * from "./records";
+export * from "./licenses";
+export * from "./credits";
